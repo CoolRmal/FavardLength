@@ -39,8 +39,9 @@ Fourier/Defs ─ Statements ─────────────────�
 | LowerBound | `FavardLength/LowerBound/` | `LowerBoundStatement` | Basic |
 | Combinatorics | `FavardLength/Combinatorics/` | `DichotomyStatement` | Basic |
 | Hilbert | `FavardLength/Moment/Hilbert.lean` | `HilbertStatement` | — |
-| SineCell | `FavardLength/Moment/SineCell.lean` (+ `Moment/Riesz.lean`) | `SineCellStatement` | — |
-| LowCell | `FavardLength/Moment/LowCell.lean` | `LowCellStatement` | — |
+| MeanOne | `FavardLength/Moment/MeanOne.lean` | `MeanOneStatement` | — |
+| SineCell | `FavardLength/Moment/SineCell.lean` (+ `Moment/SineCell/`) | `MeanOneStatement → SineCellStatement` | MeanOne |
+| LowCell | `FavardLength/Moment/LowCell.lean` (+ `Moment/LowCell/`) | `MeanOneStatement → LowCellStatement` | MeanOne |
 | JointMoment | `FavardLength/Moment/JointMoment.lean` | `SineCellStatement → LowCellStatement → HilbertStatement → JointMomentStatement` | the three |
 | Window | `FavardLength/Fourier/Window.lean` | `WindowStatement` | — |
 | Annular | `FavardLength/Fourier/Annular.lean` | `AnnularStatement` | — |

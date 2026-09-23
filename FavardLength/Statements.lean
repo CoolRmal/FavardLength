@@ -84,6 +84,12 @@ def JointMomentStatement : Prop :=
         ENNReal.ofReal |lowProd m t y| ^ (-s) * ENNReal.ofReal (highProd m n t y ^ 2) ≤
       ENNReal.ofReal (A * ((4 : ℝ) ^ m) ^ (3 * s / 2) / 4 ^ (n - m))
 
+/-- **Mean-one lemma for lacunary cosine products**: over any interval whose length is the
+period `2π/(β 4^a)` of the lowest admissible frequency, `∏_{k∈S} (1 + cos(β 4^k w))` has mean one. -/
+def MeanOneStatement : Prop :=
+  ∀ β : ℝ, 0 < β → ∀ (a : ℕ) (S : Finset ℕ), (∀ k ∈ S, a ≤ k) → ∀ x : ℝ,
+    ∫ w in x..x + 2 * π / (β * 4 ^ a), ∏ k ∈ S, (1 + cos (β * 4 ^ k * w)) = 2 * π / (β * 4 ^ a)
+
 /-- **Sine-cell inverse moment weighted by the Riesz product** (P4 and J2–J3), on the cells
 `I_i = [iπ/L, (i+1)π/L]`, `L = 4^m`. -/
 def SineCellStatement : Prop :=
