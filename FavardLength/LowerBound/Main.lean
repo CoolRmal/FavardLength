@@ -74,7 +74,8 @@ theorem integral_projLength_ge (n : ℕ) :
       intervalIntegral.integral_const, intervalIntegral.integral_const_mul, sub_zero,
       smul_eq_mul]
   have hE : ∫ θ in (0)..(π / 4), pairEnergy n θ ≤ M := integral_sum_overlap_le n
-  have hlow : (π - 1) / (4 * M) ≤ π / 4 * (2 * t) - t ^ 2 * ∫ θ in (0)..(π / 4), pairEnergy n θ := by
+  have hlow :
+      (π - 1) / (4 * M) ≤ π / 4 * (2 * t) - t ^ 2 * ∫ θ in (0)..(π / 4), pairEnergy n θ := by
     have ht2 : 0 ≤ t ^ 2 := sq_nonneg t
     have hstep : π / 4 * (2 * t) - t ^ 2 * M ≤
         π / 4 * (2 * t) - t ^ 2 * ∫ θ in (0)..(π / 4), pairEnergy n θ := by

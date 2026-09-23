@@ -85,7 +85,8 @@ def JointMomentStatement : Prop :=
       ENNReal.ofReal (A * ((4 : ℝ) ^ m) ^ (3 * s / 2) / 4 ^ (n - m))
 
 /-- **Mean-one lemma for lacunary cosine products**: over any interval whose length is the
-period `2π/(β 4^a)` of the lowest admissible frequency, `∏_{k∈S} (1 + cos(β 4^k w))` has mean one. -/
+period `2π/(β 4^a)` of the lowest admissible frequency, `∏_{k∈S} (1 + cos(β 4^k w))` has mean
+one. -/
 def MeanOneStatement : Prop :=
   ∀ β : ℝ, 0 < β → ∀ (a : ℕ) (S : Finset ℕ), (∀ k ∈ S, a ≤ k) → ∀ x : ℝ,
     ∫ w in x..x + 2 * π / (β * 4 ^ a), ∏ k ∈ S, (1 + cos (β * 4 ^ k * w)) = 2 * π / (β * 4 ^ a)

@@ -74,7 +74,8 @@ lemma inv_pow_div_two_le_integral_one_sub_mul_nuHat_sq (r : ℕ) (t a : ℝ) :
     refine Finset.sum_congr rfl fun d' _ => ?_
     ring_nf
   have hint : ∀ l : ℝ,
-      IntervalIntegrable (fun y => (1 - y) * cos (l * y)) MeasureTheory.volume 0 1 := fun l => by apply Continuous.intervalIntegrable; fun_prop
+      IntervalIntegrable (fun y => (1 - y) * cos (l * y)) MeasureTheory.volume 0 1 :=
+    fun l => by apply Continuous.intervalIntegrable; fun_prop
   rw [hexp, intervalIntegral.integral_const_mul, intervalIntegral.integral_finsetSum
     fun d _ => (by
       apply Continuous.intervalIntegrable
