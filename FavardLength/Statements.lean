@@ -45,6 +45,12 @@ def BridgeStatement : Prop :=
   ∀ θ ∈ Icc 0 (π / 4), ∀ r : ℕ,
     normEnergy r (tan (π / 4 - θ)) = 3 / (8 * (cos θ + sin θ)) * energy r θ
 
+/-- **Triangle (Fejér) identity**: the no-`2π` Fourier inversion formula for the triangle
+function, whose Fourier transform is `ℓ² sinc(ℓξ/2)²`. -/
+def TriangleStatement : Prop :=
+  ∀ ℓ : ℝ, 0 < ℓ → Integrable (fun ξ : ℝ => sinc (ℓ / 2 * ξ) ^ 2) ∧
+    ∀ x : ℝ, max 0 (ℓ - |x|) = (2 * π)⁻¹ * ∫ ξ, ℓ ^ 2 * sinc (ℓ / 2 * ξ) ^ 2 * cos (ξ * x)
+
 /-! ## Fourier side, normalized slope variable `t ∈ [0,1]` -/
 
 /-- **Exceptional directions** (J9), normalized form. -/

@@ -35,7 +35,7 @@ Fourier/Defs ─ Statements ─────────────────�
 
 | Part | Directory / files | Proves | May assume |
 |---|---|---|---|
-| Basic | `FavardLength/Basic.lean` (+ `Basic/` helpers) | all lemmas stated in `Basic.lean` | — |
+| Basic | `FavardLength/BasicProof/` | every lemma of `Basic.lean`, as `Favard.BasicProof.<name>` with the identical statement; the orchestrator then wires `Basic.lean` to them | — |
 | LowerBound | `FavardLength/LowerBound/` | `LowerBoundStatement` | Basic |
 | Combinatorics | `FavardLength/Combinatorics/` | `DichotomyStatement` | Basic |
 | Hilbert | `FavardLength/Moment/Hilbert.lean` | `HilbertStatement` | — |
@@ -45,7 +45,8 @@ Fourier/Defs ─ Statements ─────────────────�
 | Window | `FavardLength/Fourier/Window.lean` | `WindowStatement` | — |
 | Annular | `FavardLength/Fourier/Annular.lean` | `AnnularStatement` | — |
 | Exceptional | `FavardLength/Fourier/Exceptional.lean` | `WindowStatement → AnnularStatement → JointMomentStatement → NormalizedExceptionalStatement` | the three |
-| Bridge | `FavardLength/Fourier/Triangle.lean`, `Fourier/Bridge.lean`, `Fourier/Angle.lean` | `BridgeStatement`; `NormalizedExceptionalStatement → BridgeStatement → ExceptionalAngleStatement` | Basic |
+| Triangle | `FavardLength/Fourier/Triangle.lean` | `TriangleStatement` | — |
+| Bridge | `FavardLength/Fourier/Bridge.lean`, `Fourier/Angle.lean` | `TriangleStatement → BridgeStatement`; `NormalizedExceptionalStatement → BridgeStatement → ExceptionalAngleStatement` | Basic |
 | Decay | `FavardLength/Decay.lean` | `DichotomyStatement → ExceptionalAngleStatement → ∀ a ∈ [0,1/4), ∃ C > 0, …` | Basic |
 | Exponent | `FavardLength/Exponent.lean` | decay family + `LowerBoundStatement` ⇒ `1/4 ≤ α_Fav ≤ 1` | Basic |
 
