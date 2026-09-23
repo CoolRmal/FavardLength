@@ -13,5 +13,11 @@
   search (`docs/literature.md`), the informal proof account (`docs/proof-account.md`), and the
   Palomar metadata were completed.
 
+- 2026-09-23: Moved to Lean and Mathlib v4.35.0-rc2, Palomar's new minimum, and adopted
+  PalomarTemplate `cb5c79b`: the toolchain's `lake comparator` under bubblewrap with the NanoDa
+  and con-ron kernels. The development built unchanged. A local run of `lake comparator`
+  without the sandbox accepted the Solution.
+- 2026-09-23: Shortened the registry abstract.
+
 Remaining before registration: a passing Comparator run on the final commit, then Palomar intake
 and review, which need the maintainer's explicit go-ahead.

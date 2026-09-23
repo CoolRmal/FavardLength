@@ -56,8 +56,9 @@ proved `Fav(K_n) ≥ 1/(320 n)`. They also show that the admissible set is bound
 
 All four theorems are proved in [`Solution.lean`](Solution.lean) and depend only on the axioms
 `propext`, `Classical.choice` and `Quot.sound`. The repository contains no `sorry` outside the
-Challenge's deliberate statement holes. Comparator, run through the pinned template script with
-Landrun sandboxing and the independent NanoDa kernel, accepts the Solution.
+Challenge's deliberate statement holes. The toolchain's `lake comparator` (Lean v4.35.0-rc2)
+accepts the Solution, checked with Lean's kernel and the bundled independent NanoDa and con-ron
+kernels.
 
 ## The proof
 
@@ -125,8 +126,9 @@ ruby scripts/validate-formalization.rb
 ./scripts/verify-comparator.sh
 ```
 
-The Comparator script needs Linux and Landrun; CI runs it on every push. Submissions to Palomar
-go through https://submit.palomar-registry.org/.
+The Comparator script runs the toolchain's `lake comparator` under bubblewrap, which needs
+Linux; CI runs it on every push. Submissions to Palomar go through
+https://submit.palomar-registry.org/.
 
 ## Licence
 

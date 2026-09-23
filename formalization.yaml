@@ -4,28 +4,16 @@ version: "v0.4"
 project:
   name: "The Favard-length decay exponent of the four-corner Cantor set is at least 1/4"
   description: >-
-    Let K_n be the depth-n approximant of the four-corner Cantor set: the product C_n × C_n,
-    where C_n is the union of the 2^n intervals of length 4^{-n} with left endpoints
-    sum_{j<=n} w_j 4^{-j}, w_j in {0,3}. Its Favard length Fav(K_n) = (1/π) ∫_0^π |π_θ(K_n)| dθ
-    is the average length of its orthogonal projections. The decay exponent α_Fav is the
-    supremum of the a >= 0 for which Fav(K_n) <= C n^{-a} holds for some C and all n >= 1.
-
-    This project proves in Lean that every a < 1/4 is admissible, so that 1/4 <= α_Fav. It also
-    proves the known bound α_Fav <= 1 through Fav(K_n) >= 1/(320 n), which shows that the set of
-    admissible exponents is bounded above. It does not claim that 1/4 itself is admissible.
-    Before this work the published lower bounds were 1/6 (Nazarov, Peres and Volberg, 2010,
-    still the value in Tao's optimization-constants registry) and 1/5 (Marshall,
-    arXiv:2509.02882 v2, August 2026, preprint). Marshall's v1 had claimed 1/4, and v2 withdrew
-    that claim as unjustified by its methods. The upper bound α_Fav <= 1 is classical (Mattila
-    1990; Bateman and Volberg 2010).
-
-    The proof follows the Nazarov-Peres-Volberg framework and uses Marshall's sharp combinatorial
-    propagation in an endpoint form. Its new ingredient is a joint negative-moment estimate for
-    the entire low-frequency cosine product, weighted by the high-frequency mass. This supplies
-    the weighted low-frequency input that Marshall v2 identifies as missing for 1/4. The
-    argument comes from an unpublished September 2026 manuscript produced with AI assistance.
-    The Lean development, written by AI agents under human direction, is its first complete
-    proof.
+    For the four-corner Cantor set approximants K_n = C_n × C_n, where C_n is the union of the
+    2^n intervals of length 4^{-n} with left endpoints sum_{j<=n} w_j 4^{-j}, w_j in {0,3}, let
+    α_Fav be the supremum of the a >= 0 for which the Favard length
+    Fav(K_n) = (1/π) ∫_0^π |π_θ(K_n)| dθ is at most C n^{-a} for all n >= 1. This project proves
+    in Lean that every a < 1/4 is admissible, so 1/4 <= α_Fav, together with the classical bound
+    α_Fav <= 1. The previous best lower bounds were 1/6 (Nazarov-Peres-Volberg, 2010) and 1/5
+    (Marshall, arXiv:2509.02882 v2, 2026, whose v1 claim of 1/4 was withdrawn). The new
+    ingredient is a joint negative-moment estimate for the low-frequency cosine product. The
+    argument comes from an unpublished AI-assisted manuscript, and this formalization is its
+    first complete proof.
   authors:
     - "Yongxi Lin"
   license: "Apache-2.0"
@@ -223,8 +211,8 @@ automation:
     Two stages. First, the mathematics was produced in a ChatGPT project as a written argument
     with internal reviews and a formalization plan. Second, Claude Code agents produced the Lean
     formalization, splitting it into independently checked parts joined by frozen Prop
-    contracts. The Lean kernel, and in CI Comparator's sandboxed replay with the independent
-    NanoDa kernel, confirm the stated theorems. The figures above come from the workflow
+    contracts. The Lean kernel confirms the stated theorems, and so does the toolchain's
+    lake comparator, run in CI under bubblewrap with the bundled NanoDa and con-ron kernels. The figures above come from the workflow
     runtime's usage reports and git timestamps.
 
 fidelity:
@@ -247,7 +235,7 @@ review:
     - "Claude Code audit agents (claude-opus-5-5), run separately from the proving agents"
   notes: >-
     No human mathematical review of the manuscript or the Lean proof. The Lean kernel and
-    Comparator (sandboxed, with NanoDa) check the compared theorems. Two independent agent audits
+    lake comparator (sandboxed, with the NanoDa and con-ron kernels) check the compared theorems. Two independent agent audits
     reviewed the statement surface. The first checked every Challenge definition for fidelity,
     coercions and junk values, with compiled sanity checks: C_0, C_1 and depth-2 membership,
     interval integrability and positivity of the Favard integral, and non-vacuity of the real
@@ -284,6 +272,6 @@ alignment:
       note: "α_Fav <= 1."
 
 acknowledgements: >-
-  Mathlib and the Lean 4 toolchain. The Palomar template, Comparator, lean4export, NanoDa and
-  Landrun for statement verification. The mathematical framework of Nazarov, Peres and Volberg,
+  Mathlib and the Lean 4 toolchain, including its bundled lake comparator and the NanoDa and
+  con-ron kernels. The Palomar template for statement verification. The mathematical framework of Nazarov, Peres and Volberg,
   and the combinatorics of Caleb Marshall.
