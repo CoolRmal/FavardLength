@@ -12,14 +12,16 @@ G1–G17) is split into three independently provable statements about a fixed di
 * `retained N θ K`, the maximal marked squares `𝓡` of the packing construction.
 
 1. `PackingStatement` (G6–G9): `∑_{R ∈ 𝓡} 4^{-|R|} ≤ C K μ_N(K)`.
-2. `EnergyAbsorptionStatement` (G10–G12, proved from `PackingStatement`): if
-   `μ_N(K) ≤ c₀ K⁻²` then `‖F_N‖₂² ≤ A K`.
+2. `EnergyAbsorptionStatement` (G10–G12): if `μ_N(K) ≤ c₀ K⁻²` then `‖F_N‖₂² ≤ A K`. It is
+   proved from 1 in `FavardLength/Combinatorics/Absorption.lean`
+   (`Favard.Comb.energyAbsorption_of_packing`).
 3. `PropagationStatement` (G13–G17): for every `c₀ > 0` there are `c, B` such that
    `μ_N(K) > c₀ K⁻²` and `J ≥ c K log K` imply `|π_θ(K_{NJ})| ≤ B/K`.
 
 `Favard.dichotomy_of` (in `FavardLength/Combinatorics/Main.lean`) derives
-`Favard.DichotomyStatement` from 2 and 3. All constants are absolute; they are existentially
-quantified, so any values produced by the proofs are acceptable.
+`Favard.DichotomyStatement` from 2 and 3, and `Favard.dichotomy_of_packing` from 1 and 3. All
+constants are absolute; they are existentially quantified, so any values produced by the proofs
+are acceptable.
 -/
 
 open MeasureTheory Set Real

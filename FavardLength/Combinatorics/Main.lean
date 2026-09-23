@@ -1,5 +1,5 @@
 import FavardLength.Statements
-import FavardLength.Combinatorics.Statements
+import FavardLength.Combinatorics.Absorption
 
 /-!
 # Assembly of the combinatorial dichotomy
@@ -9,6 +9,11 @@ and propagation sub-contracts of `FavardLength/Combinatorics/Statements.lean`: f
 `N`, `J ≥ c K log K` with `|π_θ(K_{NJ})| > B/K`. The second alternative is excluded, so
 `μ_N(K) ≤ c₀ K⁻²`, and then every generation `r ≤ N` has energy
 `∫ f_r² ≤ ∫ F_N² ≤ A K`.
+
+Since energy absorption is proved from the packing inequality
+(`Favard.Comb.energyAbsorption_of_packing`), `Favard.dichotomy_of_packing` derives the dichotomy
+from the two remaining sub-contracts `PackingStatement` (G6–G9) and `PropagationStatement`
+(G13–G17).
 -/
 
 open MeasureTheory Set Real
@@ -27,11 +32,10 @@ theorem dichotomy_of (hA : EnergyAbsorptionStatement) (hB : PropagationStatement
   · exact (energy_le_integral_maxCount_sq hθ hr).trans (hAbs θ hθ K hK N hμ)
   · exact absurd (hProp θ hθ K hK N J (not_le.mp hμ) hJ) (not_le.mpr hproj)
 
-/-- The combinatorial dichotomy from the three sub-parts: packing, energy absorption (proved from
-packing), and propagation. -/
-theorem dichotomy_of_packing (hP : PackingStatement)
-    (hA : PackingStatement → EnergyAbsorptionStatement) (hB : PropagationStatement) :
+/-- The combinatorial dichotomy from the packing inequality (G6–G9) and propagation
+(G13–G17). -/
+theorem dichotomy_of_packing (hP : PackingStatement) (hB : PropagationStatement) :
     DichotomyStatement :=
-  dichotomy_of (hA hP) hB
+  dichotomy_of (energyAbsorption_of_packing hP) hB
 
 end Favard
