@@ -85,11 +85,12 @@ theorem exists_first_diff {n : ℕ} {w w' : SqCode n} (h : w ≠ w') :
   by_contra hjw
   exact absurd (s.min'_le j (mem_filter.2 ⟨mem_univ j, hjw⟩)) (not_le.2 hj)
 
-/-- The digit value `3 [b]` of the corner coordinates. -/
+/-- A difference of two corner digits `3 [a] - 3 [b]` lies in `[-3, 3]`. -/
 theorem abs_digit_sub_le (a b : Bool) :
     |(if a then (3 : ℝ) else 0) - (if b then 3 else 0)| ≤ 3 := by
   cases a <;> cases b <;> norm_num
 
+/-- Distinct corner digits differ by exactly `3`. -/
 theorem abs_digit_sub_of_ne {a b : Bool} (h : a ≠ b) :
     |(if a then (3 : ℝ) else 0) - (if b then 3 else 0)| = 3 := by
   cases a <;> cases b <;> simp_all
