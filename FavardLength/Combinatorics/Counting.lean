@@ -115,6 +115,15 @@ theorem lintegral_wcount_words (θ : ℝ) (M : ℕ) :
   push_cast
   field_simp
 
+/-- The union of the projections of a family of depth-`M` words has length at most
+`#T σ 4^{-M}`. -/
+theorem volume_biUnion_wordIval_le (θ : ℝ) {M : ℕ} {T : Finset Word} (hT : T ⊆ words M) :
+    volume (⋃ w ∈ T, wordIval θ w) ≤ ENNReal.ofReal (#T * (sig θ / 4 ^ M)) := by
+  refine (measure_biUnion_finset_le T _).trans (le_of_eq ?_)
+  rw [Finset.sum_congr rfl fun w hw => by rw [volume_wordIval, mem_words.mp (hT hw)],
+    Finset.sum_const, nsmul_eq_mul, ← ENNReal.ofReal_natCast,
+    ← ENNReal.ofReal_mul (Nat.cast_nonneg _)]
+
 /-- A family of words of a common length is prefix-free. -/
 theorem prefixFree_of_subset_words {S : Finset Word} {n : ℕ} (hS : S ⊆ words n) :
     PrefixFree S := fun _ hu _ hw huw =>

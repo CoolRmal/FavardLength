@@ -124,6 +124,24 @@ theorem volume_superLevel_le_div (hθ : θ ∈ Icc 0 (π / 2)) (N : ℕ) {t : �
   push_cast
   field_simp
 
+/-- **Witness families (G13)**: a point of `{F_N ≥ K}` lies in the projections of `⌈K⌉` words of
+a common length `n ≤ N`. -/
+theorem exists_witness_family (hθ : θ ∈ Icc 0 (π / 2)) {N : ℕ} {K x : ℝ}
+    (hx : x ∈ superLevel N θ K) :
+    ∃ n ≤ N, ∃ S ⊆ words n, #S = ⌈K⌉₊ ∧ ∀ w ∈ S, x ∈ wordIval θ w := by
+  classical
+  obtain ⟨n, hn, hcount⟩ := mem_superLevel_iff_exists.mp hx
+  set Sx := (words n).filter fun w => x ∈ wordIval θ w
+  have hSx : #Sx = count n θ x := by
+    rw [count_eq_wcount hθ]
+    rfl
+  have hle : ⌈K⌉₊ ≤ #Sx := by
+    rw [hSx]
+    exact Nat.ceil_le.mpr hcount
+  obtain ⟨S, hS, hcard⟩ := Finset.exists_subset_card_eq hle
+  exact ⟨n, hn, S, hS.trans (Finset.filter_subset _ _), hcard,
+    fun w hw => (Finset.mem_filter.mp (hS hw)).2⟩
+
 /-- **Half-interval lemma (used in G9).** If `f_k(x) ≥ 2K` with `k ≤ N`, then some interval of
 length `σ 4^{-k}/2` having `x` as an endpoint lies in the superlevel set `{F_N ≥ K}`. -/
 theorem exists_Icc_subset_superLevel (hθ : θ ∈ Icc 0 (π / 2)) {N k : ℕ} (hk : k ≤ N)

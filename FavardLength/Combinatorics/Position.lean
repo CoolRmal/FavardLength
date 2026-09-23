@@ -203,6 +203,13 @@ theorem wordIval_subset_of_prefix (hθ : θ ∈ Icc 0 (π / 2)) {u w : Word} (h 
   obtain ⟨t, rfl⟩ := h
   exact wordIval_append_subset hθ u t
 
+/-- Words with disjoint projections are not prefix-related. -/
+theorem not_prefix_of_disjoint (hθ : θ ∈ Icc 0 (π / 2)) {u w : Word}
+    (h : Disjoint (wordIval θ u) (wordIval θ w)) : ¬u <+: w := by
+  intro huw
+  obtain ⟨y, hy⟩ := wordIval_nonempty hθ w
+  exact Set.disjoint_left.mp h (wordIval_subset_of_prefix hθ huw hy) hy
+
 /-! ### Enlargements -/
 
 /-- The concentric triple `[p - ℓ, p + 2ℓ]` of the projected interval `[p, p + ℓ]` of `w`. -/
