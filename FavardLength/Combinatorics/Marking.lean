@@ -154,10 +154,9 @@ theorem length_le_of_mem_retained {N : ℕ} {K : ℝ} {w : Word} (hw : w ∈ ret
     w.length ≤ N :=
   length_le_of_mem_marked (retained_subset_marked N θ K hw)
 
-/-- Every depth-`m(x)` word whose projection contains `x` is marked, where `m(x)` is the first
-crossing at `x`; its prefix of any length whose projection contains `x` is below a retained word.
-This is the form used in (G8) and (G11): if `x` has first crossing `m ≤ |v|` and `x` lies in
-the projection of `v`, then `v` lies below a retained word (of length at most `m`). -/
+/-- If `x` has first crossing `m` and lies in the projection of a word `v` with `m ≤ |v|`, then
+the length-`m` prefix of `v` is marked, so `v` lies below a retained word of length at most `m`.
+This is the form used in (G8) and (G11). -/
 theorem exists_retained_prefix_of_firstCross (hθ : θ ∈ Icc 0 (π / 2)) {N m : ℕ} {K x : ℝ}
     (h : FirstCross N θ K x m) {v : Word} (hmv : m ≤ v.length) (hx : x ∈ wordIval θ v) :
     ∃ r ∈ retained N θ K, r <+: v ∧ r.length ≤ m := by
