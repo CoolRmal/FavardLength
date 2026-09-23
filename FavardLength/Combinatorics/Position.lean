@@ -1,4 +1,4 @@
-import FavardLength.Basic
+import FavardLength.Squares
 import FavardLength.Combinatorics.Words
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
@@ -252,10 +252,41 @@ theorem proj_corner {n : ℕ} (w : SqCode n) : proj θ (corner w) = wordPos θ (
     simp only [proj, corner, leftEnd_succ, digitShift]
     split_ifs <;> ring
 
+/-- The projection of an axis-parallel square `[a, a + s] × [b, b + s]` in a direction
+`θ ∈ [0, π/2]` is `[π_θ(a, b), π_θ(a, b) + σ s]`. -/
+theorem proj_image_Icc_prod (hθ : θ ∈ Icc 0 (π / 2)) (a b s : ℝ) :
+    proj θ '' (Icc a (a + s) ×ˢ Icc b (b + s)) =
+      Icc (proj θ (a, b)) (proj θ (a, b) + sig θ * s) := by
+  have hc := cos_nonneg_of_mem_Icc hθ
+  have hsn := sin_nonneg_of_mem_Icc hθ
+  have hσ := sig_pos hθ
+  ext z
+  simp only [Set.mem_image, Set.mem_prod, Set.mem_Icc, proj, Prod.exists]
+  constructor
+  · rintro ⟨x, y, ⟨⟨hx1, hx2⟩, hy1, hy2⟩, rfl⟩
+    have e1 := mul_le_mul_of_nonneg_right hx1 hc
+    have e2 := mul_le_mul_of_nonneg_right hx2 hc
+    have e3 := mul_le_mul_of_nonneg_right hy1 hsn
+    have e4 := mul_le_mul_of_nonneg_right hy2 hsn
+    unfold sig
+    constructor <;> nlinarith
+  · rintro ⟨hz1, hz2⟩
+    set t := (z - (a * cos θ + b * sin θ)) / sig θ with ht
+    have ht0 : 0 ≤ t := div_nonneg (by linarith) hσ.le
+    have hts : t ≤ s := by
+      rw [ht, div_le_iff₀ hσ]
+      linarith
+    refine ⟨a + t, b + t, ⟨⟨by linarith, by linarith⟩, by linarith, by linarith⟩, ?_⟩
+    have : t * sig θ = z - (a * cos θ + b * sin θ) := by
+      rw [ht]
+      field_simp
+    unfold sig at this
+    linarith
+
 theorem proj_image_square_eq (hθ : θ ∈ Icc 0 (π / 2)) {n : ℕ} (w : SqCode n) :
     proj θ '' square w = wordIval θ (List.ofFn w) := by
-  rw [proj_image_square hθ, proj_corner]
-  simp [wordIval, sig]
+  rw [square, proj_image_Icc_prod hθ _ _ _, Prod.mk.eta, proj_corner, wordIval,
+    List.length_ofFn, mul_one_div]
 
 open Classical in
 /-- The number of words of the finite family `S` whose projected interval contains `x`. -/
@@ -272,11 +303,44 @@ theorem count_eq_wcount (hθ : θ ∈ Icc 0 (π / 2)) (n : ℕ) (x : ℝ) :
   ext w
   simp [proj_image_square_eq hθ]
 
+theorem mem_cantorApprox_iff {n : ℕ} {x : ℝ} :
+    x ∈ cantorApprox n ↔ ∃ b : Fin n → Bool, x ∈ Icc (leftEnd b) (leftEnd b + 1 / 4 ^ n) := by
+  simp only [cantorApprox, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]
+  constructor
+  · rintro ⟨w, hw, hx⟩
+    refine ⟨fun j => decide (w j = 3), ?_⟩
+    have : leftEnd (fun j => decide (w j = 3)) = ∑ j : Fin n, w j / 4 ^ ((j : ℕ) + 1) := by
+      refine Finset.sum_congr rfl fun j _ => ?_
+      rcases hw j with h | h <;> simp [h]
+    rwa [this]
+  · rintro ⟨b, hx⟩
+    exact ⟨fun j => if b j then 3 else 0, fun j => by by_cases h : b j <;> simp [h], hx⟩
+
+theorem mem_fourCorner_iff {n : ℕ} {p : ℝ × ℝ} :
+    p ∈ fourCorner n ↔ ∃ w : SqCode n, p ∈ square w := by
+  simp only [fourCorner, Set.mem_prod, mem_cantorApprox_iff, square, corner]
+  constructor
+  · rintro ⟨⟨b, hb⟩, b', hb'⟩
+    exact ⟨fun j => (b j, b' j), hb, hb'⟩
+  · rintro ⟨w, hw1, hw2⟩
+    exact ⟨⟨_, hw1⟩, _, hw2⟩
+
+/-- The projection of `K_n` is the union of the projected intervals of the depth-`n` words. -/
 theorem proj_image_fourCorner_eq (hθ : θ ∈ Icc 0 (π / 2)) (n : ℕ) :
     proj θ '' fourCorner n = ⋃ w ∈ words n, wordIval θ w := by
-  rw [proj_image_fourCorner]
-  ext x
-  simp [proj_image_square_eq hθ, words]
+  ext z
+  simp only [Set.mem_image, Set.mem_iUnion, exists_prop]
+  constructor
+  · rintro ⟨p, hp, rfl⟩
+    obtain ⟨w, hw⟩ := mem_fourCorner_iff.mp hp
+    refine ⟨List.ofFn w, ofFn_mem_words w, ?_⟩
+    rw [← proj_image_square_eq hθ]
+    exact ⟨p, hw, rfl⟩
+  · rintro ⟨l, hl, hz⟩
+    obtain ⟨w, -, rfl⟩ := Finset.mem_image.mp hl
+    rw [← proj_image_square_eq hθ] at hz
+    obtain ⟨p, hp, rfl⟩ := hz
+    exact ⟨p, mem_fourCorner_iff.mpr ⟨w, hp⟩, rfl⟩
 
 theorem projLength_eq (hθ : θ ∈ Icc 0 (π / 2)) (n : ℕ) :
     projLength n θ = (volume (⋃ w ∈ words n, wordIval θ w)).toReal := by

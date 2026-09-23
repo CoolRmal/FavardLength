@@ -353,14 +353,14 @@ theorem superLevel_subset_Icc (hθ : θ ∈ Icc 0 (π / 2)) (N : ℕ) {K : ℝ} 
   simp only [CharP.cast_eq_zero] at hx
   linarith
 
-theorem volume_superLevel_le (hθ : θ ∈ Icc 0 (π / 2)) (N : ℕ) {K : ℝ} (hK : 0 < K) :
+theorem volume_superLevel_le_sig (hθ : θ ∈ Icc 0 (π / 2)) (N : ℕ) {K : ℝ} (hK : 0 < K) :
     volume (superLevel N θ K) ≤ ENNReal.ofReal (sig θ) := by
   refine (measure_mono (superLevel_subset_Icc hθ N hK)).trans ?_
   simp
 
 theorem volume_superLevel_ne_top (hθ : θ ∈ Icc 0 (π / 2)) (N : ℕ) {K : ℝ} (hK : 0 < K) :
     volume (superLevel N θ K) ≠ ⊤ :=
-  ne_top_of_le_ne_top ENNReal.ofReal_ne_top (volume_superLevel_le hθ N hK)
+  ne_top_of_le_ne_top ENNReal.ofReal_ne_top (volume_superLevel_le_sig hθ N hK)
 
 theorem superLevel_antitone {N : ℕ} {K K' : ℝ} (h : K ≤ K') :
     superLevel N θ K' ⊆ superLevel N θ K :=
