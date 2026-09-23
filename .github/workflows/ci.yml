@@ -86,30 +86,6 @@ jobs:
         with:
           build: true
 
-  docs:
-    name: Build API documentation
-    runs-on: ubuntu-latest
-    timeout-minutes: 240
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with:
-          persist-credentials: false
-      - uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9
-        with:
-          build: false
-      - name: Build doc-gen4 output
-        working-directory: docbuild
-        env:
-          MATHLIB_NO_CACHE_ON_UPDATE: "1"
-          DISABLE_EQUATIONS: "1"
-          DOCGEN_SRC: github
-        run: lake build FavardLength:docs
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: api-documentation
-          path: docbuild/.lake/build/doc
-          if-no-files-found: error
-
   comparator:
     name: Check statement against solution
     runs-on: ubuntu-latest
