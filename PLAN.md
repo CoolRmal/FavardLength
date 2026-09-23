@@ -1,6 +1,8 @@
 # Formalization plan
 
-Target: the three statements of `Challenge.lean`:
+**Status: complete.** All contracts are proved; see `PROGRESS.md`.
+
+Target: the statements of `Challenge.lean` (a fourth, `le_one_of_mem_admissibleExponents`, was added after assembly):
 
 * `Favard.favard_le_rpow_of_lt_quarter`: for every `a ∈ [0, 1/4)` there is `C > 0` with
   `Fav(K_n) ≤ C n^{-a}` for all `n ≥ 1`;

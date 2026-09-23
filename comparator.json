@@ -4,6 +4,7 @@
   "theorem_names": [
     "Favard.favard_le_rpow_of_lt_quarter",
     "Favard.one_quarter_le_decayExponent",
+    "Favard.le_one_of_mem_admissibleExponents",
     "Favard.decayExponent_le_one"
   ],
   "definition_names": [],

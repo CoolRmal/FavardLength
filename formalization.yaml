@@ -1,125 +1,289 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
-# formalization.yaml v0.4. Replace every TEMPLATE value before submitting.
-# Replace a placeholder list with [] only when its adjacent comment permits it;
-# lists described as required must remain nonempty.
 version: "v0.4"
 
 project:
-  name: "TEMPLATE: name of the formalization"
+  name: "The Favard-length decay exponent of the four-corner Cantor set is at least 1/4"
   description: >-
-    TEMPLATE: concise public account of the mathematical content and principal
-    results of the formalization
-  # Required nonempty list of name strings or mappings with a nonempty name.
-  authors:
-    - "TEMPLATE: formalizer name"
-  # Required root licence. Keep this in sync with the Apache-2.0 LICENSE file.
-  license: "Apache-2.0"
-  # Required nonempty list of name strings or mappings with a nonempty name.
-  # For a thin wrapper, name people responsible for this submitted wrapper;
-  # submission authorization separately covers the underlying formalization.
-  responsible_maintainers:
-    - "TEMPLATE: person responsible for this formalization"
+    Let K_n be the depth-n approximant of the four-corner Cantor set: the product C_n × C_n,
+    where C_n is the union of the 2^n intervals of length 4^{-n} with left endpoints
+    sum_{j<=n} w_j 4^{-j}, w_j in {0,3}. Its Favard length Fav(K_n) = (1/π) ∫_0^π |π_θ(K_n)| dθ
+    is the average length of its orthogonal projections. The decay exponent α_Fav is the
+    supremum of the a >= 0 for which Fav(K_n) <= C n^{-a} holds for some C and all n >= 1.
 
-# Omit repository for an ordinary project: Palomar treats this submitted
-# repository as the substantive proof development. If this repository is only
-# a thin Comparator wrapper, uncomment and pin the actual formalization in this
-# exact shape:
-# repository:
-#   substantive_formalization:
-#     id: "TEMPLATE: owner/repository or https://github.com/owner/repository"
-#     revision: "TEMPLATE: full 40-character lowercase commit SHA"
+    This project proves in Lean that every a < 1/4 is admissible, so that 1/4 <= α_Fav. It also
+    proves the known bound α_Fav <= 1 through Fav(K_n) >= 1/(320 n), which shows that the set of
+    admissible exponents is bounded above. It does not claim that 1/4 itself is admissible.
+    Before this work the published lower bounds were 1/6 (Nazarov, Peres and Volberg, 2010,
+    still the value in Tao's optimization-constants registry) and 1/5 (Marshall,
+    arXiv:2509.02882 v2, August 2026, preprint). Marshall's v1 had claimed 1/4, and v2 withdrew
+    that claim as unjustified by its methods. The upper bound α_Fav <= 1 is classical (Mattila
+    1990; Bateman and Volberg 2010).
+
+    The proof follows the Nazarov-Peres-Volberg framework and uses Marshall's sharp combinatorial
+    propagation in an endpoint form. Its new ingredient is a joint negative-moment estimate for
+    the entire low-frequency cosine product, weighted by the high-frequency mass. This supplies
+    the weighted low-frequency input that Marshall v2 identifies as missing for 1/4. The
+    argument comes from an unpublished September 2026 manuscript produced with AI assistance.
+    The Lean development, written by AI agents under human direction, is its first complete
+    proof.
+  authors:
+    - "Yongxi Lin"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Yongxi Lin"
 
 classification:
-  # Use 1–2 official arXiv identifiers such as math.LO and 1–8 five-character
-  # MSC 2020 identifiers such as 03B35.
-  arxiv: ["TEMPLATE: official arXiv identifier such as math.LO"]
-  msc2020: ["TEMPLATE: five-character MSC 2020 identifier such as 03B35"]
+  arxiv: ["math.CA", "math.MG"]
+  msc2020: ["28A80", "28A75", "42A38"]
 
 sources:
-  # Sources must be nonempty. Every source needs a title and relationship; the
-  # relationship must be exactly formalizes, adapts, independently-proves,
-  # background, or other.
-  # Choose one result origin:
-  # - For a theorem first presented by this formalization, set one source to
-  #   type: original-proof and relationship: other. All additional source
-  #   relationships must be background or other.
-  # - Otherwise, omit type: original-proof and give at least one source a
-  #   formalizes, adapts, or independently-proves relationship. A new proof of
-  #   a known published result is source-based and uses independently-proves.
-  # Type, authors, contributors, id, location, note, license, and
-  # author_endorsement are optional; remove them when genuinely inapplicable.
-  # Authors are bibliographic authors. Contributors record other source roles,
-  # with one name and free-form role such as editor or problem-proposer.
-  # Type is a concise free-text
-  # description such as article, paper, book, formalization, web post, folklore,
-  # conversation, or other. The exact value original-proof is reserved for the
-  # result-origin declaration described above.
-  # Original-result example:
-  # - title: "TEMPLATE: describe the result first presented here"
-  #   type: original-proof
-  #   relationship: other
-  - title: "TEMPLATE: title of the mathematical source"
-    authors:
-      - "TEMPLATE: source author"
-    contributors:
-      - name: "TEMPLATE: source contributor"
-        role: "TEMPLATE: contributor role, for example editor or problem-proposer"
-    id: "TEMPLATE: stable identifier or versioned URL"
-    type: "TEMPLATE: concise source kind, for example article, book, or formalization"
-    location: "TEMPLATE: stable URL or bibliographic location, if available"
-    relationship: "TEMPLATE: formalizes, adapts, independently-proves, background, or other"
-    note: "TEMPLATE: explain relationship or author_endorsement: other; otherwise remove"
-    license: "TEMPLATE: source license or unknown"
-    author_endorsement: "TEMPLATE: participated, endorsed, no-response, not-contacted, declined, n/a, or other"
+  - title: >-
+      Fav(K_n) <= C_a n^{-a} for every a < 1/4 for the four-corner Cantor set, hence 1/4 <= α_Fav,
+      via a joint negative-moment estimate for the low-frequency product
+    type: original-proof
+    relationship: other
+    note: >-
+      The result is first presented, as a complete proof, by this formalization. The informal
+      argument is the manuscript "An optimized negative-moment argument for the four-corner
+      Favard exponent" (September 2026, SHA-256
+      a90fbdcc0cbe9f0e412b0db9430013d2667b3688ce4c531b14837f46c744145c). Yongxi Lin produced it
+      in a ChatGPT project, and it has not been published, posted or refereed; the repository
+      does not include it. docs/proof-account.md describes the Lean proof actually present.
 
-related_formalizations:
-  # Remove this field or use [] when none are known.
-  - id: "TEMPLATE: stable URL or identifier for earlier formalization"
-    relationship: "TEMPLATE: builds-on, adapts, independent, supersedes, or other"
-    note: "TEMPLATE: explain the relationship"
+      Novelty qualification: docs/literature.md records a literature search performed on
+      2026-09-23. It comprised three independent passes (citation graph; web, talks and code;
+      surveys and chronology) and a verification pass that re-read the decisive sources, and it
+      lists every query. The search found no valid proof of α_Fav >= 1/4 for this set. The only
+      earlier assertion is Marshall's arXiv:2509.02882 v1, Remark 1.3 and section 3.5, and v2
+      section 8.5 withdraws it as "not justified by our current methods". The most recent
+      statements found place the frontier at 1/6 (Łaba-McDonald-Taylor, arXiv:2607.28793, July
+      2026; Tao's registry, constant 60a, September 2026) or 1/5 (Marshall v2). The searchers
+      estimated about 95 percent confidence that no valid proof of 1/4 appeared earlier. Marshall's
+      UBC dissertation (April 2026) could not be read past bot verification and may restate the
+      withdrawn v1 claim. Novelty is asserted on this basis alone.
+  - title: The power law for the Buffon needle probability of the four-corner Cantor set
+    authors:
+      - "Fedor Nazarov"
+      - "Yuval Peres"
+      - "Alexander Volberg"
+    id: "arXiv:0801.2942"
+    type: paper
+    location: "https://arxiv.org/abs/0801.2942"
+    relationship: background
+    note: >-
+      Algebra i Analiz 22(1) (2010) 82-97; St. Petersburg Math. J. 22 (2011) 61-72. Theorem 1
+      gives Fav(K_n) <= C n^{δ-1/6}, the first power law. The subsequent remark says decay
+      faster than O(n^{-1/4}) would need new ideas. The Fourier-analytic framework used here
+      (normalized densities, Riesz products, exceptional directions) is theirs. No statement is
+      transcribed from it.
+    license: unknown
+    author_endorsement: not-contacted
+  - title: Improved Power Laws for the Favard Length Problem in All Dimensions
+    authors:
+      - "Caleb Marshall"
+    id: "arXiv:2509.02882"
+    type: paper
+    location: "https://arxiv.org/abs/2509.02882"
+    relationship: background
+    note: >-
+      Version 2 (12 August 2026) proves α_Fav >= 1/5 (Theorem 1.2 = Theorem 8.3). It does so by
+      replacing the NPV combinatorial propagation with a sharper one (section 7). The dichotomy
+      formalized here (G1-G17 in docs/proof-account.md) is an endpoint version of that marked-
+      cylinder and packing construction, with a direct Cauchy-Schwarz energy absorption.
+      Version 2, section 8.5 and Future Directions (8.27), identifies the missing weighted
+      low-frequency input for 1/4. Version 1 (2 September 2025, titled "Power laws for the
+      Favard length problem in R^d") had claimed 1/4 in Remark 1.3 and section 3.5; version 2
+      withdraws it. Preprint, not refereed.
+    license: unknown
+    author_endorsement: not-contacted
+  - title: An estimate from below for the Buffon needle probability of the four-corner Cantor set
+    authors:
+      - "Michael Bateman"
+      - "Alexander Volberg"
+    id: "arXiv:0807.2953"
+    type: paper
+    location: "https://arxiv.org/abs/0807.2953"
+    relationship: background
+    note: >-
+      Math. Res. Lett. 17 (2010) 959-967. Theorem 1 gives Fav(K_n) >= c log n / n, the best
+      known bound in that direction, which implies α_Fav <= 1. This project proves α_Fav <= 1
+      with the weaker, elementary bound Fav(K_n) >= 1/(320 n), which is in the spirit of
+      Mattila (1990).
+    license: unknown
+    author_endorsement: not-contacted
+  - title: How likely is Buffon's needle to fall near a planar Cantor set?
+    authors:
+      - "Yuval Peres"
+      - "Boris Solomyak"
+    id: "doi:10.2140/pjm.2002.204.473"
+    type: paper
+    location: "https://doi.org/10.2140/pjm.2002.204.473"
+    relationship: background
+    note: "Pacific J. Math. 204 (2002). The first explicit decay rate, exp(-c log* n). Historical context only."
+    license: unknown
+    author_endorsement: not-contacted
+  - title: "Optimization constants: the Favard-length decay exponent of the four-corner Cantor set (constant 60a)"
+    contributors:
+      - name: "Terence Tao"
+        role: "maintainer of the crowdsourced optimization-constants registry"
+    id: "https://teorth.github.io/optimizationproblems/constants/60a.html"
+    type: web discussion
+    location: "https://github.com/teorth/optimizationproblems/blob/main/constants/60a.md"
+    relationship: background
+    note: >-
+      Records the problem in the form formalized here, as sup of admissible exponents, and the
+      range 1/6 <= α_Fav <= 1 (file unchanged since 2026-02-21, checked 2026-09-23). The
+      Challenge requires n >= 1 where the registry says "all n in N", because n^{-a} is
+      undefined at n = 0.
+    license: unknown
+    author_endorsement: not-contacted
+
+related_formalizations: []
 
 status:
   scope: >-
-    TEMPLATE: state exactly what is and is not formalized, including any weaker
-    theorem, changed hypotheses, or omitted material.
-  # Count the proof development, excluding Challenge.lean's deliberate sorry.
-  # Replace each count with an unquoted nonnegative integer, for example 0.
-  sorry_count: "TEMPLATE: unquoted nonnegative integer"
-  sorry_in_definitions: "TEMPLATE: unquoted nonnegative integer"
-  axioms: ["TEMPLATE: declaration names, or replace this list with []"]
-  # status.main_results is optional. Add it only when a short curated
-  # project-level list is useful; it need not mirror Comparator declarations.
+    Formalized in full, with only the axioms propext, Classical.choice and Quot.sound. The
+    definitions are literal, in Challenge.lean: the Cantor approximants C_n (digits {0,3}, base
+    4), K_n = C_n × C_n, the projection x cos θ + y sin θ, Lebesgue measure of the projection,
+    Fav(K_n) as (1/π) times the interval integral over [0, π], the admissible exponents, and
+    α_Fav as their real supremum. Four compared theorems: every a in [0, 1/4) is admissible
+    (favard_le_rpow_of_lt_quarter); 1/4 <= α_Fav (one_quarter_le_decayExponent); every
+    admissible exponent is at most 1 (le_one_of_mem_admissibleExponents); α_Fav <= 1
+    (decayExponent_le_one).
+
+    Not formalized: admissibility of the endpoint 1/4. The manuscript's sharper quantitative
+    bound Fav(K_n) <= C n^{-1/4}(2 + log n)^{7/2}, which needs a depth-dependent moment
+    parameter, is not formalized; the development instead fixes the moment parameter for each
+    target exponent. Also not formalized: the manuscript's limitation of the uniform
+    negative-moment method at its critical parameter, and its lower bound constant
+    1/(4n + sqrt 2), since the development proves 1/(320 n). None of these is needed for the
+    compared theorems.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: []
 
 automation:
   methods:
-    - method: "TEMPLATE: manual, copilot, agent, autonomous, or other"
-      models: ["TEMPLATE: model names, or replace this list with []"]
-      framework: "TEMPLATE: framework name, or n/a"
-      tool_setup: "TEMPLATE: exact detail, such as AI-assisted, editors, tactics, agents, or other tools used"
+    - method: agent
+      models:
+        - "OpenAI ChatGPT project sessions; exact model versions not recorded locally"
+      framework: "ChatGPT project workspace with a local file mirror"
+      tool_setup: >-
+        The mathematical argument was developed in the ChatGPT project "Favard-length
+        conjecture" before any Lean was written. The project produced the manuscript, several
+        superseded drafts (exponents 1/5 and 7/33), internal component reviews, an independent
+        informal review, a list of formalization prerequisites and an autoformalization plan.
       cost:
-        wall_time: "TEMPLATE: approximate elapsed effort"
-        spend_usd: "TEMPLATE: amount, subscription-based, or not tracked"
-        hardware: "TEMPLATE: local machine, API-only, or other"
-      prompting_notes: "TEMPLATE: representative prompting notes, or n/a"
-  spend_usd: "TEMPLATE: total amount, subscription-based, or not tracked"
-  notes: "TEMPLATE: describe the overall human and automation workflow"
+        wall_time: "not recorded"
+        spend_usd: "subscription-based"
+        hardware: "API-only"
+      prompting_notes: >-
+        Human-directed research on the Favard exponent. The transcripts are not retained
+        locally, so no representative prompts can be quoted.
+    - method: agent
+      models:
+        - "claude-opus-5-5"
+      framework: "Claude Code (desktop app), with its Workflow multi-agent orchestration"
+      tool_setup: >-
+        One orchestrating session wrote the Challenge, the shared definitions and fourteen Prop
+        contracts between proof parts (FavardLength/Statements.lean). It then ran a workflow of
+        17 agents, one per part: the combinatorics lead designed two sub-contracts that two
+        further agents proved. Each agent had shell access to the Lean toolchain (lake, lean,
+        grep over Mathlib sources) and committed its own files. The workflow runtime measured
+        17 agents, 2,531,799 subagent tokens, 587 tool calls and 45 min 34 s of wall clock, with
+        every part complete on its first attempt. The orchestrator then assembled the parts and
+        checked axioms. A second workflow of 7 agents (1,333,040 subagent tokens, 464 tool calls,
+        30 min 10 s) performed the literature search, two independent statement and Comparator
+        audits, and the informal proof account.
+      cost:
+        wall_time: >-
+          about 2 h for the whole session, 00:46 to about 02:50 EDT on 2026-09-23, including the initial search for the plan. The first
+          commit (01:13) to the complete kernel-checked proof (commit a3cb6a5, 02:06) took
+          54 min.
+        spend_usd: "subscription-based; not separately tracked"
+        hardware: "local machine (Apple silicon, 10 cores, 16 GB) for Lean builds; API-only for inference"
+      prompting_notes: >-
+        The user asked Claude Code to find the ChatGPT project's autoformalization plan, then to
+        create a Mathlib-based project and prove 1/4 <= α_Fav in a Comparator-checked Challenge
+        following Palomar standards, pushing commits regularly to GitHub.
+    - method: manual
+      models: []
+      framework: "n/a"
+      tool_setup: >-
+        Human direction of both stages: choice of the problem, commissioning and supplying the
+        manuscript and plan, choice of repository and publication settings, and final reading
+        of the metadata.
+      cost:
+        wall_time: "not tracked separately"
+        spend_usd: "not tracked"
+        hardware: "local machine"
+      prompting_notes: "n/a"
+  spend_usd: "subscription-based; not separately tracked"
+  notes: >-
+    Two stages. First, the mathematics was produced in a ChatGPT project as a written argument
+    with internal reviews and a formalization plan. Second, Claude Code agents produced the Lean
+    formalization, splitting it into independently checked parts joined by frozen Prop
+    contracts. The Lean kernel, and in CI Comparator's sandboxed replay with the independent
+    NanoDa kernel, confirm the stated theorems. The figures above come from the workflow
+    runtime's usage reports and git timestamps.
 
 fidelity:
-  divergences: "TEMPLATE: all known divergences from the cited source, or none known"
+  divergences: >-
+    The Lean proof establishes the manuscript's qualitative conclusion, α_Fav >= 1/4, by
+    routes that sometimes differ from the manuscript; docs/proof-account.md lists them. For each
+    target exponent a < 1/4 the moment parameter s is fixed, instead of choosing s by depth.
+    Hence the (2 + log n)^{7/2} bound is not claimed. The exceptional-direction estimate J9 is
+    proved in an integrated form rather than through a Markov-selected subset. The mean-one
+    property of the lacunary cosine products uses an antiperiodicity induction rather than
+    Fourier expansion. The derivative bound in J4 avoids Parseval. The Plancherel step is
+    replaced by the Fourier inversion formula for the triangle function. The elementary lower
+    bound is proved with constant 1/320 rather than 1/(4n + sqrt 2). The Challenge requires
+    n >= 1, where the registry's definition reads "all n in N", because n^{-a} is undefined at
+    n = 0. No known divergence affects the compared statements.
 
 review:
-  status: "TEMPLATE: honest review status, for example self-assessed"
+  status: "agent-reviewed"
   reviewers:
-    - "TEMPLATE: reviewer name, or none"
-  notes: "TEMPLATE: describe statement audits and mathematical review performed"
+    - "Claude Code audit agents (claude-opus-5-5), run separately from the proving agents"
+  notes: >-
+    No human mathematical review of the manuscript or the Lean proof. The Lean kernel and
+    Comparator (sandboxed, with NanoDa) check the compared theorems. Two independent agent audits
+    reviewed the statement surface. The first checked every Challenge definition for fidelity,
+    coercions and junk values, with compiled sanity checks: C_0, C_1 and depth-2 membership,
+    interval integrability and positivity of the Favard integral, and non-vacuity of the real
+    supremum. The second checked the Comparator setup: kernel-term identity of the Challenge and
+    Solution definitions, import separation, the configuration against the Palomar policy, and
+    the absence of sorry, axioms, native_decide and kernel-bypassing options. Both found the
+    statements faithful. Their one material comment, a numeric claim about the lower-bound
+    constant in the Challenge docstring that Lean had not checked, was corrected. The ChatGPT
+    project's own reviews of the manuscript are internal to it and are not counted as
+    independent review.
 
 alignment:
-  namespace: "TEMPLATE: project namespace"
+  namespace: "Favard"
   statements:
-    - source: "TEMPLATE: source theorem or section"
-      lean: "TEMPLATE: fully qualified Lean declaration"
-      module: "TEMPLATE: Lean module containing the declaration"
-      status: "TEMPLATE: proved, partial, adapted, or other honest description"
-      note: "TEMPLATE: explain the correspondence and any qualifications"
+    - source: "Manuscript J12 and final display; qualitative form α_Fav >= 1/4"
+      lean: "Favard.favard_le_rpow_of_lt_quarter"
+      module: "Solution"
+      status: "proved"
+      note: "For every a in [0, 1/4) there is C > 0 with Fav(K_n) <= C n^{-a} for all n >= 1."
+    - source: "Manuscript, boxed conclusion 1/4 <= α_Fav"
+      lean: "Favard.one_quarter_le_decayExponent"
+      module: "Solution"
+      status: "proved"
+      note: "The real supremum of the admissible exponents is at least 1/4."
+    - source: "Manuscript, 'An elementary proof of the upper bound on the exponent' (L1-L2)"
+      lean: "Favard.le_one_of_mem_admissibleExponents"
+      module: "Solution"
+      status: "proved"
+      note: "Every admissible exponent is at most 1, via Fav(K_n) >= 1/(320 n); the admissible set is bounded above."
+    - source: "Manuscript, boxed α_Fav <= 1; Bateman-Volberg 2010"
+      lean: "Favard.decayExponent_le_one"
+      module: "Solution"
+      status: "proved"
+      note: "α_Fav <= 1."
 
-acknowledgements: "TEMPLATE: libraries, tools, and people to credit"
+acknowledgements: >-
+  Mathlib and the Lean 4 toolchain. The Palomar template, Comparator, lean4export, NanoDa and
+  Landrun for statement verification. The mathematical framework of Nazarov, Peres and Volberg,
+  and the combinatorics of Caleb Marshall.
