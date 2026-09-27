@@ -7,6 +7,11 @@ import FavardLength.Beyond.Assembly.Main
 import FavardLength.Beyond.Assembly.Certificate
 import FavardLength.Beyond.Coverage.Main
 import FavardLength.Beyond.Exclusion.Main
+import FavardLength.Beyond.Exclusion.Complementary
+import FavardLength.Beyond.Exclusion.RelDeriv
+import FavardLength.Beyond.Exclusion.Harmonic
+import FavardLength.Beyond.Exclusion.CellSelection
+import FavardLength.Beyond.Exclusion.FlatBlock
 
 /-!
 # Wiring for the beyond-quarter exponent
@@ -48,5 +53,11 @@ theorem beyond_of_exclusion_parts (hcount : Exclusion.ComplementaryCountStatemen
   beyond_of_exclusion
     (exclusion_of hcount hbound hrel hharm hflat hwin (by norm_num) (by norm_num) (by norm_num)
       (by norm_num))
+
+/-- The beyond-quarter bound, given the window bounds of the smooth-window argument. -/
+theorem beyond_of_window (hwin : Exclusion.WindowBoundStatement) :
+    ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
+  beyond_of_exclusion_parts Exclusion.complementaryCount Exclusion.complementaryBound
+    Exclusion.relDeriv Exclusion.harmonic (Exclusion.flatBlock_of Exclusion.cellSelection) hwin
 
 end Favard
