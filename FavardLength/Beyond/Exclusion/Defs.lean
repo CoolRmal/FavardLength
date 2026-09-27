@@ -65,6 +65,12 @@ noncomputable def boxFTC (n : ℕ) (z : ℂ) : ℂ :=
 noncomputable def copySum (n : ℕ) (t : ℝ) {m : ℕ} (β : Fin m → ℝ) (x : ℝ) : ℝ :=
   ∑ i, tailDensity n t (x - β i)
 
+/-- The left endpoint `-ρ/2 + i ρ 4^{-j}` of the `i`-th level-`j` four-adic cell of the root
+interval `[-ρ/2, ρ/2] = [-4/3, 4/3]` (Appendix D §1); the cell is
+`[cellLeft j i, cellLeft j (i + 1)]`, of length `ρ4^{-j}`. -/
+noncomputable def cellLeft (j i : ℕ) : ℝ :=
+  -(4 / 3) + i * (8 / 3 / 4 ^ j)
+
 /-! ### Cosine products -/
 
 /-- The finite cosine product `A_n(x) = ∏_{j=1}^n cos(πx/4^j)`. -/

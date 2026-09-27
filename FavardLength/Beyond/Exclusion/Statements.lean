@@ -18,7 +18,8 @@ statement from them.
   `k < 6m²` at which a nonnegatively weighted phase sum does not cancel.
 * **(d) Flat block** (Appendices D, E): martingale selection in a low-energy density, enlarged and
   rescaled to an interval of length `T = ρ4^r`, with whole tail copies that are flat on the
-  middle half at resolution `T/4^{r+L}`.
+  middle half at resolution `T/4^{r+L}`. It may be split into the martingale cell selection
+  `CellSelectionStatement` (d1) and its rescaling and cropping (d2).
 * **(e) Window bounds** (Appendix G §4): the lower copy count under the plateau of the cutoff and
   the upper bound for the Taylor-expanded window transform from flatness.
 -/
@@ -78,6 +79,24 @@ def FlatBlockStatement : Prop :=
     ∃ (n m : ℕ) (β : Fin m → ℝ) (α : ℝ), N ≤ 2 * (n + r) ∧ 0 < α ∧ α ≤ 12 * H ∧
       (m : ℝ) ≤ α * (8 / 3 * 4 ^ r) ∧
       MiddleFlat (copySum n t β) (8 / 3 * 4 ^ r) α (512 / 3 * H * (r + L) / N) (r + L)
+
+/-- **(d1) Martingale cell selection** (Appendix D (1)–(3); the neighbour condition (2) is only
+needed for the mean itself). If `normEnergy N t ≤ H` and `N ≥ 16L`, some level-`j` four-adic
+cell `I = [cellLeft j i, cellLeft j (i+1)]` with `2j ≤ N` has mean `a` (so `∫_I f_{N,t} = a|I|`)
+with `0 < a ≤ 12H`, and relative block variance at level `j + L` at most `η² = 64ρHL/N`:
+`∑_c (∫_c f_{N,t} - a|c|)² ≤ η² a² |I| |c|` over the `4^L` level-`(j+L)` sub-cells `c` of `I`.
+This is an optional intermediate step for (d): `FlatBlockStatement` follows from it by
+rescaling at level `j + r` (`Exclusion.tailDensity_rescale`) and cropping whole copies. -/
+def CellSelectionStatement : Prop :=
+  ∀ (H t : ℝ) (N L : ℕ), 0 < H → t ∈ Icc (0 : ℝ) 1 → 1 ≤ L → 16 * L ≤ N →
+    normEnergy N t ≤ H →
+    ∃ (j i : ℕ) (a : ℝ), 2 * j ≤ N ∧ i < 4 ^ j ∧
+      (∫ y in cellLeft j i..cellLeft j (i + 1), tailDensity N t y) = a * (8 / 3 / 4 ^ j) ∧
+      0 < a ∧ a ≤ 12 * H ∧
+      ∑ c ∈ Finset.range (4 ^ L),
+          ((∫ y in cellLeft (j + L) (4 ^ L * i + c)..cellLeft (j + L) (4 ^ L * i + c + 1),
+              tailDensity N t y) - a * (8 / 3 / 4 ^ (j + L))) ^ 2 ≤
+        512 / 3 * H * L / N * a ^ 2 * (8 / 3 / 4 ^ j) * (8 / 3 / 4 ^ (j + L))
 
 /-- **(e) Window bounds** (Appendix G (12), (14)–(15), (18)–(19)). Fix the Taylor order `J`.
 For copies `g = ∑_i f_{n,t}(· - β_i)` flat on the middle half of `[0, T]` at resolution
