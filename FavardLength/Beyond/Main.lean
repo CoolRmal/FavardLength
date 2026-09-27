@@ -6,6 +6,7 @@ import FavardLength.Beyond.NewExceptional
 import FavardLength.Beyond.Assembly.Main
 import FavardLength.Beyond.Assembly.Certificate
 import FavardLength.Beyond.Coverage.Main
+import FavardLength.Beyond.Exclusion.Main
 
 /-!
 # Wiring for the beyond-quarter exponent
@@ -37,5 +38,15 @@ theorem beyond_of_exclusion_coverage (hX : ExclusionStatement (13 / 125) (1 / 10
 theorem beyond_of_exclusion (hX : ExclusionStatement (13 / 125) (1 / 100000)) :
     ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
   beyond_of_exclusion_coverage hX coverage
+
+/-- The beyond-quarter bound, given the six sub-contracts of the smooth-window exclusion. -/
+theorem beyond_of_exclusion_parts (hcount : Exclusion.ComplementaryCountStatement)
+    (hbound : Exclusion.ComplementaryBoundStatement) (hrel : Exclusion.RelDerivStatement)
+    (hharm : Exclusion.HarmonicStatement) (hflat : Exclusion.FlatBlockStatement)
+    (hwin : Exclusion.WindowBoundStatement) :
+    ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
+  beyond_of_exclusion
+    (exclusion_of hcount hbound hrel hharm hflat hwin (by norm_num) (by norm_num) (by norm_num)
+      (by norm_num))
 
 end Favard
