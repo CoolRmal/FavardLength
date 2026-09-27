@@ -16,11 +16,12 @@ With `π_θ(x,y) = x cos θ + y sin θ` and `λ` Lebesgue measure on `ℝ`, the 
 `Fav(K_n) ≤ C n^{-a}` for some `C > 0` and every `n ≥ 1`. The decay exponent `α_Fav` is the
 supremum of the admissible exponents, taken in `ℝ`.
 
-The results: every `a ∈ [0, 1/4)` is admissible, so `1/4 ≤ α_Fav`. An elementary lower bound
-`Fav(K_n) ≥ c/n` (the development proves it with `c = 1/320`) shows that every admissible exponent
-is at most `1`, so `α_Fav ≤ 1`. Together these say that the admissible set is nonempty and bounded
-above, so `α_Fav` is its least upper bound rather than the value Mathlib assigns to `sSup` of an
-unbounded set. Nothing here asserts that `1/4` itself is admissible.
+The results: the exponent `156307/625000 = 0.2500912` is admissible, so
+`156307/625000 ≤ α_Fav` and in particular `α_Fav > 1/4`. Every `a ∈ [0, 1/4)` is admissible,
+which gives `1/4 ≤ α_Fav`. An elementary lower bound `Fav(K_n) ≥ c/n` (the development proves it
+with `c = 1/320`) shows that every admissible exponent is at most `1`, so `α_Fav ≤ 1`. Together
+these say that the admissible set is nonempty and bounded above, so `α_Fav` is its least upper
+bound rather than the value Mathlib assigns to `sSup` of an unbounded set.
 
 The deliberate `sorry`s specify the statements; the proofs are in `Solution.lean`.
 -/
@@ -69,6 +70,16 @@ theorem favard_le_rpow_of_lt_quarter {a : ℝ} (ha₀ : 0 ≤ a) (ha : a < 1 / 4
 
 /-- The decay exponent is at least one quarter: `1/4 ≤ α_Fav`. -/
 theorem one_quarter_le_decayExponent : 1 / 4 ≤ decayExponent := by
+  sorry
+
+/-- The exponent `156307/625000 = 0.2500912 > 1/4` is admissible:
+`Fav(K_n) ≤ C n^{-156307/625000}` for all `n ≥ 1`. -/
+theorem favard_le_rpow_beyond_quarter :
+    ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) := by
+  sorry
+
+/-- The decay exponent exceeds one quarter: `156307/625000 ≤ α_Fav`. -/
+theorem beyond_quarter_le_decayExponent : 156307 / 625000 ≤ decayExponent := by
   sorry
 
 /-- Every admissible exponent is at most one. -/

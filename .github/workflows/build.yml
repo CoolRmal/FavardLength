@@ -36,9 +36,9 @@ jobs:
         shell: bash
         run: |
           if grep -REn --include='*.lean' --exclude-dir='.lake' \
-              '(^|[^[:alnum:]_])admit([^[:alnum:]_]|$)|native_decide|Lean\.ofReduceBool|implemented_by|^[[:space:]]*axiom([^[:alnum:]_]|$)|set_option[[:space:]]+debug' \
+              '(^|[^[:alnum:]_])(sorry|admit)([^[:alnum:]_]|$)|native_decide|Lean\.ofReduceBool|implemented_by|^[[:space:]]*axiom([^[:alnum:]_]|$)|set_option[[:space:]]+debug' \
               . | grep -vE '^(\./)?Challenge\.lean:'; then
-            echo "forbidden construct found"
+            echo "forbidden construct found outside the Challenge's deliberate sorries"
             exit 1
           fi
           while IFS= read -r file; do

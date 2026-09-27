@@ -12,6 +12,7 @@ import FavardLength.Beyond.Exclusion.RelDeriv
 import FavardLength.Beyond.Exclusion.Harmonic
 import FavardLength.Beyond.Exclusion.CellSelection
 import FavardLength.Beyond.Exclusion.FlatBlock
+import FavardLength.Beyond.Exclusion.Window
 
 /-!
 # Wiring for the beyond-quarter exponent
@@ -59,5 +60,22 @@ theorem beyond_of_window (hwin : Exclusion.WindowBoundStatement) :
     ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
   beyond_of_exclusion_parts Exclusion.complementaryCount Exclusion.complementaryBound
     Exclusion.relDeriv Exclusion.harmonic (Exclusion.flatBlock_of Exclusion.cellSelection) hwin
+
+/-- Smooth-window exclusion with a counted exceptional set of rationals (beyond note (6)–(7)). -/
+theorem exclusion {γ ε : ℝ} (hγ0 : 0 < γ) (hγ2 : γ < 2) (hε0 : 0 < ε) (hε : ε < 1 / 2) :
+    ExclusionStatement γ ε :=
+  exclusion_of Exclusion.complementaryCount Exclusion.complementaryBound Exclusion.relDeriv
+    Exclusion.harmonic (Exclusion.flatBlock_of Exclusion.cellSelection) Exclusion.windowBound
+    hγ0 hγ2 hε0 hε
+
+/-- **The beyond-quarter bound**: `Fav(K_n) ≤ C n^{-156307/625000}` for all `n ≥ 1`. -/
+theorem beyond :
+    ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
+  beyond_of_window Exclusion.windowBound
+
+/-- `156307/625000 ≤ α_Fav`. -/
+theorem beyond_quarter_le_decayExponent' : 156307 / 625000 ≤ decayExponent := by
+  have hsub := admissibleExponents_subset_Iic_one lowerBound
+  exact le_csSup ⟨1, fun a ha => hsub ha⟩ ⟨by norm_num, beyond⟩
 
 end Favard
