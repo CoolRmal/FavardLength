@@ -2,18 +2,20 @@
 version: "v0.4"
 
 project:
-  name: "The Favard-length decay exponent of the four-corner Cantor set is at least 1/4"
+  name: "The Favard-length decay exponent of the four-corner Cantor set exceeds 1/4"
   description: >-
     For the four-corner Cantor set approximants K_n = C_n × C_n, where C_n is the union of the
     2^n intervals of length 4^{-n} with left endpoints sum_{j<=n} w_j 4^{-j}, w_j in {0,3}, let
     α_Fav be the supremum of the a >= 0 for which the Favard length
     Fav(K_n) = (1/π) ∫_0^π |π_θ(K_n)| dθ is at most C n^{-a} for all n >= 1. This project proves
-    in Lean that every a < 1/4 is admissible, so 1/4 <= α_Fav, together with the classical bound
-    α_Fav <= 1. The previous best lower bounds were 1/6 (Nazarov-Peres-Volberg, 2010) and 1/5
-    (Marshall, arXiv:2509.02882 v2, 2026, whose v1 claim of 1/4 was withdrawn). The new
-    ingredient is a joint negative-moment estimate for the low-frequency cosine product. The
-    argument comes from an unpublished AI-assisted manuscript, and this formalization is its
-    first complete proof.
+    in Lean that Fav(K_n) <= C n^{-156307/625000}, so α_Fav >= 156307/625000 = 0.2500912 > 1/4,
+    together with the intermediate quarter bound and the classical bound α_Fav <= 1. The previous
+    best lower bounds were 1/6 (Nazarov-Peres-Volberg, 2010) and 1/5 (Marshall, arXiv:2509.02882
+    v2, 2026, whose v1 claim of 1/4 was withdrawn). The quarter bound uses a joint negative moment
+    of the low-frequency cosine product; the strict improvement adds a transfer-operator gain,
+    smooth-window exclusion of rational directions counted by an exact sixth moment, and redundant
+    rational coverage. The arguments come from unpublished AI-assisted manuscripts, and this
+    formalization is their first complete proof.
   authors:
     - "Yongxi Lin"
   license: "Apache-2.0"
@@ -26,17 +28,20 @@ classification:
 
 sources:
   - title: >-
-      Fav(K_n) <= C_a n^{-a} for every a < 1/4 for the four-corner Cantor set, hence 1/4 <= α_Fav,
-      via a joint negative-moment estimate for the low-frequency product
+      Fav(K_n) <= C n^{-156307/625000} for the four-corner Cantor set, hence
+      α_Fav >= 156307/625000 > 1/4, with the intermediate bound Fav(K_n) <= C_a n^{-a} for a < 1/4
     type: original-proof
     relationship: other
     note: >-
-      The result is first presented, as a complete proof, by this formalization. The informal
-      argument is the manuscript "An optimized negative-moment argument for the four-corner
-      Favard exponent" (September 2026, SHA-256
-      a90fbdcc0cbe9f0e412b0db9430013d2667b3688ce4c531b14837f46c744145c). Yongxi Lin produced it
-      in a ChatGPT project, and it has not been published, posted or refereed; the repository
-      does not include it. docs/proof-account.md describes the Lean proof actually present.
+      The results are first presented, as complete proofs, by this formalization. The informal
+      arguments are two manuscripts that Yongxi Lin produced in a ChatGPT project: "An
+      optimized negative-moment argument for the four-corner Favard exponent" (September 2026,
+      SHA-256 a90fbdcc0cbe9f0e412b0db9430013d2667b3688ce4c531b14837f46c744145c) for the quarter
+      bound, and "Beyond the quarter exponent: complete proof and supporting lemmas" (23
+      September 2026, SHA-256 bd2183c6136399e9012c73c6eba3eee669d0687c71726a6a583076ca4902b333
+      for its markdown source) for the strict improvement. Neither has been published, posted or
+      refereed, and the repository does not include them. docs/proof-account.md and
+      docs/proof-account-beyond.md describe the Lean proof actually present.
 
       Novelty qualification: docs/literature.md records a literature search performed on
       2026-09-23. It comprised three independent passes (citation graph; web, talks and code;
@@ -48,7 +53,10 @@ sources:
       2026; Tao's registry, constant 60a, September 2026) or 1/5 (Marshall v2). The searchers
       estimated about 95 percent confidence that no valid proof of 1/4 appeared earlier. Marshall's
       UBC dissertation (April 2026) could not be read past bot verification and may restate the
-      withdrawn v1 claim. Novelty is asserted on this basis alone.
+      withdrawn v1 claim. Since no valid proof of even the exponent 1/4 was found, the exponent
+      156307/625000 > 1/4 is new on the same basis; the search found no claim of any exponent
+      above 1/4 for this set other than the withdrawn v1 claim of 1/4 itself. Novelty is asserted
+      on this basis alone.
   - title: The power law for the Buffon needle probability of the four-corner Cantor set
     authors:
       - "Fedor Nazarov"
@@ -134,18 +142,21 @@ status:
     definitions are literal, in Challenge.lean: the Cantor approximants C_n (digits {0,3}, base
     4), K_n = C_n × C_n, the projection x cos θ + y sin θ, Lebesgue measure of the projection,
     Fav(K_n) as (1/π) times the interval integral over [0, π], the admissible exponents, and
-    α_Fav as their real supremum. Four compared theorems: every a in [0, 1/4) is admissible
+    α_Fav as their real supremum. Six compared theorems: the exponent 156307/625000 is
+    admissible (favard_le_rpow_beyond_quarter); 156307/625000 <= α_Fav
+    (beyond_quarter_le_decayExponent); every a in [0, 1/4) is admissible
     (favard_le_rpow_of_lt_quarter); 1/4 <= α_Fav (one_quarter_le_decayExponent); every
     admissible exponent is at most 1 (le_one_of_mem_admissibleExponents); α_Fav <= 1
     (decayExponent_le_one).
 
-    Not formalized: admissibility of the endpoint 1/4. The manuscript's sharper quantitative
-    bound Fav(K_n) <= C n^{-1/4}(2 + log n)^{7/2}, which needs a depth-dependent moment
-    parameter, is not formalized; the development instead fixes the moment parameter for each
-    target exponent. Also not formalized: the manuscript's limitation of the uniform
-    negative-moment method at its critical parameter, and its lower bound constant
-    1/(4n + sqrt 2), since the development proves 1/(320 n). None of these is needed for the
-    compared theorems.
+    Not formalized: the optimized exponent of the beyond note (about 0.25009435, its (32)–(33)),
+    which is a supremum over parameters; the development proves the note's explicit rational
+    target 156307/625000 with a fixed parameter choice. Also not formalized: the quarter
+    manuscript's sharper bound Fav(K_n) <= C n^{-1/4}(2 + log n)^{7/2}, the limitation of the
+    uniform negative-moment method at its critical parameter, the beyond note's linear
+    propagation theorem (Appendix C; the logarithmic dichotomy suffices because logarithms are
+    absorbed into small powers), and the lower bound constant 1/(4n + sqrt 2), since the
+    development proves 1/(320 n). None of these is needed for the compared theorems.
   sorry_count: 0
   sorry_in_definitions: 0
   axioms: []
@@ -194,6 +205,27 @@ automation:
         The user asked Claude Code to find the ChatGPT project's autoformalization plan, then to
         create a Mathlib-based project and prove 1/4 <= α_Fav in a Comparator-checked Challenge
         following Palomar standards, pushing commits regularly to GitHub.
+    - method: agent
+      models:
+        - "claude-opus-5-5"
+      framework: "Claude Code (desktop app), orchestrating parallel background subagents"
+      tool_setup: >-
+        Strict improvement beyond 1/4, 26-27 September 2026. The orchestrating session read the
+        64-page beyond note, replaced its subharmonic sampling inequality by a discrete
+        transfer-operator argument, and froze seven contracts (FavardLength/Beyond/Statements.lean).
+        Seven agents proved the improved cell-power sum, joint moment and exceptional-direction
+        estimate, the rational coverage lemma, the new exceptional estimate, and the final
+        assembly. The exclusion lead designed six sub-contracts and proved exclusion from them,
+        and six further agents proved those. Measured by the agent runtime: 13 agents and
+        2,328,272 subagent tokens; 1 h 53 min from the contracts commit (1d58689, 22:19 EDT) to
+        the commit proving the Challenge theorems (36fbea2, 00:12 EDT).
+      cost:
+        wall_time: "about 1 h 53 min of agent work for the strict improvement"
+        spend_usd: "subscription-based; not separately tracked"
+        hardware: "local machine (Apple silicon, 10 cores, 16 GB) for Lean builds; API-only for inference"
+      prompting_notes: >-
+        The user supplied the beyond note as a PDF and asked Claude Code to formalize the better
+        result, push regularly to GitHub, and make sure the formalization passes Comparator.
     - method: manual
       models: []
       framework: "n/a"
@@ -227,16 +259,30 @@ fidelity:
     replaced by the Fourier inversion formula for the triangle function. The elementary lower
     bound is proved with constant 1/320 rather than 1/(4n + sqrt 2). The Challenge requires
     n >= 1, where the registry's definition reads "all n in N", because n^{-a} is undefined at
-    n = 0. No known divergence affects the compared statements.
+    n = 0.
+
+    For the beyond note (docs/proof-account-beyond.md lists the divergences): the sampling
+    inequality for cell suprema (its B.1.2, via subharmonicity) is replaced by a discrete
+    transfer-operator bound on the 4-adic grid of cell centres, and x^a <= x + (1 - a) replaces
+    the note's (1 - a)/(ae); the fixed parameters are s = 1/2 - 10^-7 and beta = 3071/10000. The
+    note's linear propagation theorem is not used; the logarithmic dichotomy of the quarter proof
+    suffices, with logarithms absorbed into small powers. The rational coverage lemma uses a
+    union bound over odd divisors instead of Moebius inversion. The martingale cell selection
+    omits the neighbour condition. The Taylor order is chosen inside the exclusion proof from
+    gamma and epsilon. No known divergence affects the compared statements.
 
 review:
   status: "agent-reviewed"
   reviewers:
     - "Claude Code audit agents (claude-opus-5-5), run separately from the proving agents"
   notes: >-
-    No human mathematical review of the manuscript or the Lean proof. The Lean kernel and
-    lake comparator (sandboxed, with the NanoDa and con-ron kernels) check the compared theorems. Two independent agent audits
-    reviewed the statement surface. The first checked every Challenge definition for fidelity,
+    No human mathematical review of the manuscripts or the Lean proof. The Lean kernel and
+    lake comparator (sandboxed, with the NanoDa and con-ron kernels) check the compared theorems;
+    the repository's CI additionally runs lake comparator --paranoid (leanchecker-paranoid,
+    lean4lean, nanoda, con-leche, con-ron). Two independent agent audits reviewed the statement
+    surface when it held the four quarter-stage theorems. The two beyond-quarter theorems added
+    later use the same unchanged definitions and state that the fixed exponent 156307/625000 is
+    admissible and bounds α_Fav from below. The first checked every Challenge definition for fidelity,
     coercions and junk values, with compiled sanity checks: C_0, C_1 and depth-2 membership,
     interval integrability and positivity of the Favard integral, and non-vacuity of the real
     supremum. The second checked the Comparator setup: kernel-term identity of the Challenge and
@@ -250,6 +296,16 @@ review:
 alignment:
   namespace: "Favard"
   statements:
+    - source: "Beyond note, (1)"
+      lean: "Favard.favard_le_rpow_beyond_quarter"
+      module: "Solution"
+      status: "proved"
+      note: "There is C > 0 with Fav(K_n) <= C n^{-156307/625000} for all n >= 1."
+    - source: "Beyond note, (2)"
+      lean: "Favard.beyond_quarter_le_decayExponent"
+      module: "Solution"
+      status: "proved"
+      note: "The real supremum of the admissible exponents is at least 156307/625000 = 0.2500912."
     - source: "Manuscript J12 and final display; qualitative form α_Fav >= 1/4"
       lean: "Favard.favard_le_rpow_of_lt_quarter"
       module: "Solution"
@@ -273,5 +329,5 @@ alignment:
 
 acknowledgements: >-
   Mathlib and the Lean 4 toolchain, including its bundled lake comparator and the NanoDa and
-  con-ron kernels. The Palomar template for statement verification. The mathematical framework of Nazarov, Peres and Volberg,
-  and the combinatorics of Caleb Marshall.
+  con-ron kernels. The Palomar template for statement verification. The mathematical framework
+  of Nazarov, Peres and Volberg, and the combinatorics of Caleb Marshall.

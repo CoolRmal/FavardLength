@@ -1,5 +1,8 @@
 # Plan: the beyond-quarter exponent `α_Fav ≥ 156307/625000`
 
+**Status: complete.** Every contract is proved; `FavardLength/Beyond/Main.lean` wires them and
+`Solution.lean` proves `favard_le_rpow_beyond_quarter` and `beyond_quarter_le_decayExponent`.
+
 Source: `references/beyond/favard-beyond-quarter-complete.md` (the "beyond note", SHA-256
 `bd2183c6136399e9012c73c6eba3eee669d0687c71726a6a583076ca4902b333`), with component notes in
 `references/beyond/`. Target (beyond note (1)): `Fav(K_n) ≤ C n^{-156307/625000}` for all `n ≥ 1`.

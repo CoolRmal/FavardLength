@@ -18,6 +18,13 @@
   and con-ron kernels. The development built unchanged. A local run of `lake comparator`
   without the sandbox accepted the Solution.
 - 2026-09-23: Shortened the registry abstract.
+- 2026-09-26/27: Strict improvement beyond 1/4 (the beyond note). Contracts frozen at
+  `1d58689`; thirteen agents proved the improved baseline, rational coverage, the new exceptional
+  estimate, the assembly, and (through six sub-contracts) the smooth-window exclusion. Commit
+  `36fbea2` adds `favard_le_rpow_beyond_quarter` (`Fav(K_n) ≤ C n^{-156307/625000}`) and
+  `beyond_quarter_le_decayExponent` (`156307/625000 ≤ α_Fav`) to the Challenge and proves them.
+  All six compared theorems use only `propext`, `Classical.choice` and `Quot.sound`, and a local
+  `lake comparator --paranoid` run accepts the Solution with every bundled kernel.
 
 Remaining before registration: a passing Comparator run on the final commit, then Palomar intake
 and review, which need the maintainer's explicit go-ahead.
