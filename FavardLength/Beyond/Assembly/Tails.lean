@@ -94,9 +94,8 @@ theorem volume_lowEnergy_le_new {μ D c₁ CN : ℝ} (hCN : 0 < CN)
         volume {t ∈ Icc (0 : ℝ) 1 | normEnergy N t ≤ H} ≤
           ENNReal.ofReal (CN * H ^ 4 * Real.log (2 + H * R) ^ 5 / R ^ c₁))
     (hD1 : 1 ≤ D) (hD20 : D ≤ 20) (hμ : 0 ≤ μ)
-    {A K C₃ κ z η τ : ℝ} (hA : 1 ≤ A) (hK : 2 ≤ K) (hC₃ : 0 < C₃) (hκ : 0 ≤ κ) (hη : 0 ≤ η)
-    (hτ : 0 < τ)
-    {P N : ℕ} (hP : 1 ≤ (P : ℝ)) (hN : 1 ≤ N) (hPN : (P : ℝ) ≤ 2 * (C₃ * K ^ (1 + κ)) * N)
+    {A K C₃ κ z η τ : ℝ} (hA : 1 ≤ A) (hK : 2 ≤ K) (hC₃ : 0 < C₃) (hκ : 0 ≤ κ)
+    (hη : 0 ≤ η) (hτ : 0 < τ) {P N : ℕ} (hP : 1 ≤ (P : ℝ)) (hN : 1 ≤ N) (hPN : (P : ℝ) ≤ 2 * (C₃ * K ^ (1 + κ)) * N)
     (hKP : K ≤ (P : ℝ) ^ z)
     (hR : 2 ≤ (P : ℝ) ^ ((1 - η - 20 * z) / D))
     (hred : CN * A ^ 8 * ((2 + A) ^ τ / τ) ^ 9 ≤
