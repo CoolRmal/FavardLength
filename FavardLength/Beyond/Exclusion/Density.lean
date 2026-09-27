@@ -249,6 +249,19 @@ theorem tailDensity_add (j n : ℕ) (t y : ℝ) :
         linarith
   simp only [hiff]
 
+/-- **Rescaled cylinders** (Appendix D (7), E §1): for `j ≤ N` and any base point `a`,
+`f_{N,t}(a + 4^{-j} x) = ∑_{u : SqCode j} f_{N-j,t}(x - β_u)` with `β_u = 4^j (c_u(t) - a)`. -/
+theorem tailDensity_rescale {j N : ℕ} (hjN : j ≤ N) (t a x : ℝ) :
+    tailDensity N t (a + x / 4 ^ j) =
+      ∑ u : SqCode j, tailDensity (N - j) t (x - 4 ^ j * (code t u - a)) := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_add_of_le hjN
+  rw [tailDensity_add, Nat.add_sub_cancel_left]
+  refine Finset.sum_congr rfl fun u _ => ?_
+  congr 1
+  have h4 : (4 : ℝ) ^ j ≠ 0 := by positivity
+  field_simp
+  ring
+
 /-! ### Sums of copies -/
 
 lemma copySum_nonneg (n : ℕ) (t : ℝ) {m : ℕ} (β : Fin m → ℝ) (x : ℝ) :
