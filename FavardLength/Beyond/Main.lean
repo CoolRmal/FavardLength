@@ -5,6 +5,7 @@ import FavardLength.Beyond.Exceptional
 import FavardLength.Beyond.NewExceptional
 import FavardLength.Beyond.Assembly.Main
 import FavardLength.Beyond.Assembly.Certificate
+import FavardLength.Beyond.Coverage.Main
 
 /-!
 # Wiring for the beyond-quarter exponent
@@ -31,5 +32,10 @@ theorem beyond_of_exclusion_coverage (hX : ExclusionStatement (13 / 125) (1 / 10
   beyond_of dichotomy (bridge_of triangle) exceptionalImproved
     (newExceptional_of (by norm_num) (by norm_num) (by norm_num) (by norm_num)
       ((by norm_num : (0 : ℝ) < 1349 / 25000).trans Assembly.redundancyExp_gt) hX hC)
+
+/-- The beyond-quarter bound, given smooth-window exclusion. -/
+theorem beyond_of_exclusion (hX : ExclusionStatement (13 / 125) (1 / 100000)) :
+    ∃ C > 0, ∀ n : ℕ, 1 ≤ n → favardLength n ≤ C * (n : ℝ) ^ (-(156307 / 625000 : ℝ)) :=
+  beyond_of_exclusion_coverage hX coverage
 
 end Favard
